@@ -1,0 +1,189 @@
+// 0116181126-zaka ur rehman.cpp : Defines the entry point for the console application.
+//Assignment No.1 
+//Abstruct data of array
+//0116181123-asfandyar-0116181126-zaka
+//Msc I.T 4th semester
+#include "stdafx.h"
+#include"iostream"
+#include"string"
+using namespace std;
+int maxsize=3, length=0;
+struct mobile
+{
+	int Mrno;//Mobile Registration Number
+	int Mpno;//Mobile Phone Number
+	string Mname;
+	mobile(){Mrno=0,Mpno=0,Mname=' ';}
+	void input()
+	{
+		cin.ignore();
+		cout<<"Enter Mobile name"<<endl;
+		getline(cin,Mname,'\n');
+
+		cout<<"Enter Mobile reg no"<<endl;
+    	cin>>Mrno;
+		cout<<"Enter Mobile phone no"<<endl;
+		cin>>Mpno;
+	
+	}
+	void output()
+	{
+		cout<<"mobile regno is "<<Mrno <<endl;
+		cout<<"mobile Phoneno is "<<Mpno <<endl;
+		cout<<"mobile name is "<<Mname <<endl;
+	}
+
+};
+void resize(mobile *m,int maxsize)
+{
+	int newsize;
+	cout<<"Enter new size";
+	cin>>newsize;
+	maxsize=newsize;
+	 mobile *m1=new mobile[newsize];
+	
+	if(maxsize == newsize)
+	{
+		return ;
+	}
+	if(newsize>maxsize)
+	{
+		for(int i=0; i<maxsize; i++)
+		{
+			m1[i]=m[i];
+		}
+		length++;
+	}
+	if(newsize<maxsize)
+	{
+		for(int i=0; i<newsize; i++)
+		{
+			m1[i]=m[i];
+		}
+		length++;
+	}
+	m=m1;
+	delete[] m1;
+
+}
+void display(struct mobile *m)
+{
+	for(int i=0; i<length; i++)
+	{
+		m[i].output();
+	}
+}
+void add(mobile *p,int maxsize)
+{
+
+	if(length>=maxsize)
+	{
+		cout<<"Please Enter 1 for resize"<<endl;
+		return;
+	}
+	struct mobile p1;
+	p1.input();
+	p[length]=p1;
+	length++;
+}			
+int del(mobile *p,int phoneno1)
+{
+	int flage=0;
+	for(int i=0; i<length; i++)
+	{
+		if(p[i].Mpno==phoneno1)
+		{
+			flage=1;
+			for(int j=i; j<length-1; j++)
+			{
+				p[j].Mrno=p[j+1].Mrno;
+				p[j].Mpno=p[j+1].Mpno;
+				p[j].Mname=p[j+1].Mname;
+			}
+			break;
+		}
+	}
+	if(flage==1)
+	length--;
+	return 1;
+}
+void insert(struct mobile *p,int phoneno2)
+{
+	int i;
+	struct mobile m1;
+	m1.input();
+	for( i=length; i>=0; i--)
+	{
+		p[i]=p[i-1];
+		if(p[i].Mpno==phoneno2)
+			break;
+	}
+	p[i]=m1;
+}
+void search(struct mobile *m,int phoneno)
+{
+	int flage=0;
+	for (int i=0; i<maxsize; i++)
+	{
+		if(m[i].Mpno==phoneno)
+		{
+			cout<<i;
+		flage=1;
+		break;
+		}
+	}
+	if(flage==0)
+		cout<<"You entered wrong no";
+}
+int _tmain(int argc, _TCHAR* argv[])
+{
+	cout<<"Enter any Number for Start the programme";
+	int n1,n2=1,phoneno,phoneno1,phoneno2;
+	cin>>phoneno;
+	mobile *m=new mobile[maxsize];
+	m[0].input();
+	length++;
+
+loop:	cout<<"Enter 1 for resize"<<endl;
+	    cout<<"Enter 2 for add"<<endl;
+	    cout<<"Enter 3 for delete"<<endl;
+	    cout<<"Enter 4 for search"<<endl;
+	    cout<<"Enter 5 for insert"<<endl;
+	    cout<<"Enter 6 for display"<<endl;
+	    cout<<"Enter 7 for exit program"<<endl;
+	    cin>>n1;
+	switch(n1)
+	{
+	case 1:
+		resize(m,maxsize);
+		break;
+	case 6: 
+		display(m);
+		break;
+	case 2:
+			add(m,maxsize);
+			break;
+	case 3:
+		cout<<"Enter phoneno for delete";
+		cin>>phoneno1;
+		del(m,phoneno1);
+		break;
+	case 4:
+		cout<<"Enter phoneno for search";
+		search(m,phoneno);
+		break;
+	case 5:
+		cout<<"Enter phoneno for inserting before";
+		cin>>phoneno2;
+		insert(m,phoneno2);
+	case 7:
+		return 0;
+	}	
+	while(n2==1)
+	{
+		goto loop;
+	}
+	system ("pause");
+	return 0;
+}
+
